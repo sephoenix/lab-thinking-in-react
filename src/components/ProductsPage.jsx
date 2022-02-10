@@ -6,20 +6,27 @@ import { useState } from 'react';
 function ProductsPage() {
   const [products, setProduct] = useState(jsonData);
 
-  const filterSearch = (str) => {
-    let filteredProducts;
+  const onFilter = (input) => {
+    setProduct((products) => [
+      ...products.filter((product) => product.name.includes(input.name)),
+    ]);
+    if (input.name === '') {
+      setProduct(jsonData);
+    }
+  };
 
-    filteredProducts = jsonData.filter((product) => {
-      return product.name[0].toLowerCase() == str.toLowerCae();
-    });
-    setProduct(filteredProducts);
+  const handleCheck = () => {
+    setProduct((products) => [
+      ...products.filter((product) => product.inStock),
+    ]);
   };
 
   return (
     <div>
       <h1>IronStore</h1>
       <div>
-        <SearchBar filterProducts={filterSearch} />
+        <SearchBar onFilter={onFilter} />
+        <input type="checkbox" onChange={handleCheck} />
         <ProductTable products={products} />
       </div>
     </div>

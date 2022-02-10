@@ -1,17 +1,26 @@
 import { useState } from 'react';
 
-function SearchBar(props) {
-  const [input, setInput] = useState();
+function SearchBar({ onFilter }) {
+  const [input, setInput] = useState({ name: '' });
 
   const handleInput = (e) => {
-    console.log(e.target.value);
-    setInput(e.target.value);
-    props.filterProducts(e.target.value);
+    setInput((prev) => {
+      return {
+        ...prev,
+        [e.target.name]: e.target.value,
+      };
+    });
+    onFilter({ [e.target.name]: e.target.value });
   };
 
   return (
     <div>
-      <input type="search" value={input} onChange={handleInput} />
+      <input
+        name="name"
+        type="search"
+        value={input.name}
+        onChange={handleInput}
+      />
     </div>
   );
 }
